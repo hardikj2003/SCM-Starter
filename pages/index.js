@@ -7,6 +7,10 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [add, setAdd] = useState(undefined);
+  const [sub, setSub] = useState(undefined);
+  const [inputA, setInputA] = useState("");
+  const [inputB, setInputB] = useState("");
 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const atmABI = atm_abi.abi;
@@ -74,6 +78,29 @@ export default function HomePage() {
       getBalance();
     }
   }
+  const addition = async () => {
+    if (atm) {
+      const a = parseInt(inputA);
+      const b = parseInt(inputB);
+      const answer = await atm.addition(a,b);
+      setAdd(answer);
+    }
+  }  
+  const subtraction = async () => {
+    if (atm) {
+      const a = parseInt(inputA);
+      const b = parseInt(inputB);
+      const answer = await atm.subtraction(a,b);
+      setSub(answer);
+    }
+  }
+  const handleInputAChange = (event) => {
+    setInputA(event.target.value);
+  };
+
+  const handleInputBChange = (event) => {
+    setInputB(event.target.value);
+  };
 
   const initUser = () => {
     // Check to see if user has Metamask
@@ -91,12 +118,38 @@ export default function HomePage() {
     }
 
     return (
+      <>
       <div>
         <p>Your Account: {account}</p>
         <p>Your Balance: {balance}</p>
         <button onClick={deposit}>Deposit 1 ETH</button>
         <button onClick={withdraw}>Withdraw 1 ETH</button>
       </div>
+      <div>
+          <p style={{ fontFamily: "Sans-serif" }}>Add: {add ? add.toString() : ""}</p>
+          <p style={{ fontFamily: "Sans-serif" }}>Sub: {sub ? sub.toString() : ""}</p>
+
+          <input
+            type="number"
+            placeholder="Enter value A"
+            value={inputA}
+            onChange={handleInputAChange}
+          />
+          <input
+            type="number"
+            placeholder="Enter value B"
+            value={inputB}
+            onChange={handleInputBChange}
+          />
+  
+          <button style={{ backgroundColor: "grey" }} onClick={addition}>
+            Add
+          </button>
+          <button style={{ backgroundColor: "grey" }} onClick={subtraction}>
+            Sub
+          </button>
+        </div>
+      </>
     )
   }
 
