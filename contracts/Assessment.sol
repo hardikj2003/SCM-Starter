@@ -57,4 +57,11 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
+    function addition(uint a, uint b) public pure returns(uint){
+        return a+b;
+    }
+    function subtraction(uint a, uint b) public pure returns(uint){
+        require(a>=b,"value of a must me greater than b");
+        return a-b;
+    }
 }
